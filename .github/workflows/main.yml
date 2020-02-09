@@ -1,0 +1,26 @@
+name: Build Python executable package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.6]
+  
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+#     - name: Install system dependencies
+#       run: sudo apt-get install python3-tk tk tk-dev tcl
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Build executable
+      run: pyinstaller --onefile sinhalen_ui.py 
+        
